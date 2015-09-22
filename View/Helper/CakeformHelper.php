@@ -116,7 +116,6 @@ class CakeformHelper extends AppHelper {
                                 if(count($field['options']) > 1){
                                     $options['type'] = 'select';
                                     $options['multiple'] = 'checkbox';
-                                    $options['class'] = 'checkbox-inline';
                                     $options['options'] = $field['options'];
                                 } else {
                                     $options['value'] = $field['name'];
@@ -149,6 +148,10 @@ class CakeformHelper extends AppHelper {
 
                         if(!empty($field['default']) && empty($this->request->data['Form'][$field['name']])){
                                 $options['value'] = $field['default'];
+                        }
+
+                        if($field['type'] == 'date') {
+                            $options['dateFormat'] = 'DMY';
                         }
 
                         $out .= $this->Form->input($field['name'], $options);

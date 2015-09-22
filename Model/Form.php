@@ -8,6 +8,20 @@ class Form extends CformsAppModel {
 	public $dependsOn = array();
 	
 	function beforeValidate($options = array()){
+		foreach($this->data[$this->name] as $value => $fields) {
+			if (isset($fields['month']) && isset($fields['day']) && isset($fields['year'])) {
+				$this->data[$this->name][$value] = $fields['day'] . '-' . $fields['month'] . '-' . $fields['year'];
+
+				continue;
+			}
+
+			if (is_array($this->data[$this->name][$value])) {
+				$this->data[$this->name][$value] = implode(',', $this->data[$this->name][$value]);
+
+				continue;
+			}
+		}
+
 		foreach($this->dependsOn as $field => $dependsOn){
 			$this->dependsOn($field, $dependsOn['field'], $dependsOn['value']);
 		}
