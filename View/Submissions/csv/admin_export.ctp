@@ -1,9 +1,9 @@
 <?php
-$csv->addRow($fields);
+$this->Csv->addRow($fields);
 
 foreach($submissions as $submission){
-    $csv->addRow($submission);
+    $this->Csv->addRow($submission);
 }
 
-echo $csv->render('export.csv');
+echo $this->Csv->render('export.csv');
 ?>
