@@ -15,7 +15,7 @@ class ValidationRulesController extends CformsAppController {
 
 	function admin_view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid ValidationRule', true));
+			$this->Session->setFlash(__d('cforms', 'Invalid ValidationRule', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('validationRule', $this->ValidationRule->read(null, $id));
@@ -25,10 +25,10 @@ class ValidationRulesController extends CformsAppController {
 		if (!empty($this->data)) {
 			$this->ValidationRule->create();
 			if ($this->ValidationRule->save($this->data)) {
-				$this->Session->setFlash(__('The ValidationRule has been saved', true));
+				$this->Session->setFlash(__d('cforms', 'The ValidationRule has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The ValidationRule could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__d('cforms', 'The ValidationRule could not be saved. Please, try again.', true));
 			}
 		}
 		$formFields = $this->ValidationRule->FormField->find('list');
@@ -37,15 +37,15 @@ class ValidationRulesController extends CformsAppController {
 
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Invalid ValidationRule', true));
+			$this->Session->setFlash(__d('cforms', 'Invalid ValidationRule', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->data)) {
 			if ($this->ValidationRule->save($this->data)) {
-				$this->Session->setFlash(__('The ValidationRule has been saved', true));
+				$this->Session->setFlash(__d('cforms', 'The ValidationRule has been saved', true));
 				$this->redirect(array('action' => 'index'));
 			} else {
-				$this->Session->setFlash(__('The ValidationRule could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__d('cforms', 'The ValidationRule could not be saved. Please, try again.', true));
 			}
 		}
 		if (empty($this->data)) {
@@ -57,14 +57,14 @@ class ValidationRulesController extends CformsAppController {
 
 	function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for ValidationRule', true));
+			$this->Session->setFlash(__d('cforms', 'Invalid id for ValidationRule', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->ValidationRule->delete($id)) {
-			$this->Session->setFlash(__('ValidationRule deleted', true));
+			$this->Session->setFlash(__d('cforms', 'ValidationRule deleted', true));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('The ValidationRule could not be deleted. Please, try again.', true));
+		$this->Session->setFlash(__d('cforms', 'The ValidationRule could not be deleted. Please, try again.', true));
 		$this->redirect(array('action' => 'index'));
 	}
 

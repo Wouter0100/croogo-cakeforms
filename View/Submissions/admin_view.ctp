@@ -1,4 +1,4 @@
-<?php echo $this->Html->link(__('%s View All Submissions', '<i class="icon icon-list"></i>'), array('action' => 'index'),array('class' => 'btn btn-small','escape' => false)); ?>
+<?php echo $this->Html->link(__d('cforms', '%s View All Submissions', '<i class="icon icon-list"></i>'), array('action' => 'index'),array('class' => 'btn btn-small','escape' => false)); ?>
 <h2>"<?php echo $submission['Cform']['name'];?>" Submission</h2>
 <strong>Submitted On</strong> <?php echo $submission['Submission']['created'];?><br />
 <strong>Page:</strong> <?php echo $submission['Submission']['page'];?><br />
@@ -24,4 +24,4 @@
 	<?php endforeach;?>
 	</table>
 <?php endif;?>
-<?php echo $this->Html->link(__('%s View All Submissions', '<i class="icon icon-list"></i>'), array('action' => 'index'),array('class' => 'btn btn-small','escape' => false)); ?>
+<?php echo $this->Html->link(__d('cforms', '%s View All Submissions', '<i class="icon icon-list"></i>'), array('action' => 'index'),array('class' => 'btn btn-small','escape' => false)); ?>

@@ -7,7 +7,7 @@ class SubmissionsController extends CformsAppController {
 
 	function admin_export($formId = null){
 		if (!$formId) {
-			$this->Session->setFlash(__('Invalid Submission', true));
+			$this->Session->setFlash(__d('cforms', 'Invalid Submission', true));
 			$this->redirect(array('action' => 'index'));
 		}
 
@@ -29,7 +29,7 @@ class SubmissionsController extends CformsAppController {
 
 	function admin_view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid Submission', true));
+			$this->Session->setFlash(__d('cforms', 'Invalid Submission', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		$this->set('submission', $this->Submission->read(null, $id));
@@ -50,13 +50,13 @@ class SubmissionsController extends CformsAppController {
 		}
 		$this->Submission->id = $id;
 		if (!$this->Submission->exists()) {
-			throw new NotFoundException(__('Invalid Submission'));
+			throw new NotFoundException(__d('cforms', 'Invalid Submission'));
 		}
 		if ($this->Submission->delete()) {
-			$this->Session->setFlash(__('Submission deleted'));
+			$this->Session->setFlash(__d('cforms', 'Submission deleted'));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('Submission was not deleted'));
+		$this->Session->setFlash(__d('cforms', 'Submission was not deleted'));
 		$this->redirect(array('action' => 'index'));
 	}
 	

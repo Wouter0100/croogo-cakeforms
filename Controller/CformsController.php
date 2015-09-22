@@ -8,14 +8,14 @@ class CformsController extends CformsAppController {
 
 	function admin_edit($id = null) {
 		if (!$id && empty($this->request->data)) {
-			$this->Session->setFlash(__('Invalid Cform', true));
+			$this->Session->setFlash(__d('cforms', 'Invalid Cform', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		if (!empty($this->request->data)) {
 			if ($this->Cform->saveAll($this->request->data)) {
-				$this->Session->setFlash(__('The Form has been saved', true));
+				$this->Session->setFlash(__d('cforms', 'The Form has been saved', true));
 			} else {
-				$this->Session->setFlash(__('The Cform could not be saved. Please, try again.', true));
+				$this->Session->setFlash(__d('cforms', 'The Cform could not be saved. Please, try again.', true));
 			}
 		}
 		if (empty($this->request->data)) {
@@ -50,24 +50,24 @@ class CformsController extends CformsAppController {
 		if (!empty($this->request->data)) {
 			$this->Cform->create();
 			if ($this->Cform->save($this->request->data)) {
-				$this->Session->setFlash(__('The Form has been created', true));
+				$this->Session->setFlash(__d('cforms', 'The Form has been created', true));
 				$this->redirect(array('action' => 'edit', $this->Cform->id));
 			} else {
-				$this->Session->setFlash(__('The Form could not be created. Please, try again.', true));
+				$this->Session->setFlash(__d('cforms', 'The Form could not be created. Please, try again.', true));
 			}
 		}
 	}
 
 	function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for Form', true));
+			$this->Session->setFlash(__d('cforms', 'Invalid id for Form', true));
 			$this->redirect(array('action' => 'index'));
 		}
 		if ($this->Cform->delete($id)) {
-			$this->Session->setFlash(__('Form deleted', true));
+			$this->Session->setFlash(__d('cforms', 'Form deleted', true));
 			$this->redirect(array('action' => 'index'));
 		}
-		$this->Session->setFlash(__('The Form could not be deleted. Please, try again.', true));
+		$this->Session->setFlash(__d('cforms', 'The Form could not be deleted. Please, try again.', true));
 		$this->redirect(array('action' => 'index'));
 	}
 

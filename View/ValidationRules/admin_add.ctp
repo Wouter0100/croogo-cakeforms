@@ -1,7 +1,7 @@
 <div class="validationRules form">
 <?php echo $this->Form->create('ValidationRule');?>
 	<fieldset>
- 		<legend><?php __('Add ValidationRule');?></legend>
+ 		<legend><?php __d('cforms', 'Add ValidationRule');?></legend>
 	<?php
 		echo $this->Form->input('rule');
 		echo $this->Form->input('message');
@@ -12,8 +12,8 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $this->Html->link(__('List ValidationRules', true), array('action' => 'index'));?></li>
-		<li><?php echo $this->Html->link(__('List Form Fields', true), array('controller' => 'form_fields', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Form Field', true), array('controller' => 'form_fields', 'action' => 'add')); ?> </li>
+		<li><?php echo $this->Html->link(__d('cforms', 'List ValidationRules', true), array('action' => 'index'));?></li>
+		<li><?php echo $this->Html->link(__d('cforms', 'List Form Fields', true), array('controller' => 'form_fields', 'action' => 'index')); ?> </li>
+		<li><?php echo $this->Html->link(__d('cforms', 'New Form Field', true), array('controller' => 'form_fields', 'action' => 'add')); ?> </li>
 	</ul>
 </div>

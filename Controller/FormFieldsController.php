@@ -96,14 +96,14 @@ class FormFieldsController extends CformsAppController {
 		}
 
 		if (!$id) {
-			$this->Session->setFlash(__('Invalid id for FormField', true));
+			$this->Session->setFlash(__d('cforms', 'Invalid id for FormField', true));
 			$this->redirect(array('controller' => 'cforms', 'action' => 'index'));
 		}
 		if ($this->FormField->delete($id)) {
-			$this->Session->setFlash(__('FormField deleted', true));
+			$this->Session->setFlash(__d('cforms', 'FormField deleted', true));
 			$this->redirect(array('controller' => 'cforms', 'action' => 'index'));
 		}
-		$this->Session->setFlash(__('The FormField could not be deleted. Please, try again.', true));
+		$this->Session->setFlash(__d('cforms', 'The FormField could not be deleted. Please, try again.', true));
 		$this->redirect(array('action' => 'index'));
 	}
 

@@ -293,9 +293,9 @@ class CformsComponent extends Component {
                 }
 
                 if ($event->result['send']) {
-                    $this->controller->Session->setFlash(__("Thank you! Your form has been submitted."));
+                    $this->controller->Session->setFlash(__d('cforms', "Thank you! Your form has been submitted."));
 
-                    $this->send($form);
+                    $this->send($this->Submission->read());
                 }
 
                 if(!empty($form['Cform']['redirect'])){
@@ -304,12 +304,12 @@ class CformsComponent extends Component {
 
                 return true;
             } else {
-                $this->controller->Session->setFlash(__("There was a problem saving your submission. Please check for errors and try again."));
+                $this->controller->Session->setFlash(__d('cforms', "There was a problem saving your submission. Please check for errors and try again."));
 
                 return false;
             }
         } else {
-            $this->controller->Session->setFlash(__("There was a problem saving your submission. Please check this form for errors or omissions and try again."));
+            $this->controller->Session->setFlash(__d('cforms', "There was a problem saving your submission. Please check this form for errors or omissions and try again."));
             return false;
         }
     }
@@ -322,11 +322,12 @@ class CformsComponent extends Component {
  * @access public
  */
 	function send($response){
+
         $email = new CakeEmail('default');
         $email->emailFormat('both')
             ->from($response['Cform']['from'])
             ->to($response['Cform']['recipient'])
-            ->subject(__('[%s] New %s Submission', Configure::read('Site.title'), $response['Cform']['name']))
+            ->subject(__d('cforms', '[%s] New %s Submission', Configure::read('Site.title'), $response['Cform']['name']))
             ->template('Cforms.submission')
             ->viewVars(array(
                 'response' => $response,
@@ -337,7 +338,7 @@ class CformsComponent extends Component {
         try {
             $email->send();
         } catch (SocketException $e) {
-            $this->Session->setFlash('Error sending contact notification: %s', $e->getMessage());
+            $this->controller->Session->setFlash(__d('cforms', 'Error sending contact notification: %s', $e->getMessage()));
             $this->log(sprintf('Error sending contact notification: %s', $e->getMessage()));
 
             $success = false;
