@@ -38,7 +38,7 @@ $this->append('table-body');
 					echo $this->Croogo->adminRowActions($cform['Cform']['id']);
 
 					echo ' ' . $this->Croogo->adminRowAction('',
-							array('controller' => 'submissions', 'action' => 'index', $cform['Cform']['id']),
+							array('controller' => 'submissions', 'action' => 'index', '?' => array('cform_id' => $cform['Cform']['id'])),
 							array('icon' => $this->Theme->getIcon('inbox'), 'tooltip' => __d('cforms', 'View Submissions'))
 						);
 

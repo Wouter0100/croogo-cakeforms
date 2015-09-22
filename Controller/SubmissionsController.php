@@ -3,7 +3,19 @@ class SubmissionsController extends CformsAppController {
 
 	public $name = 'Submissions';
 	public $helpers = array('Html', 'Form', 'Cforms.Csv','Js');
-	public $components = array('Cforms.Cforms');
+	public $components = array(
+		'Cforms.Cforms',
+		'Search.Prg' => array(
+			'presetForm' => array(
+				'paramType' => 'querystring',
+			),
+			'commonProcess' => array(
+				'paramType' => 'querystring',
+				'filterEmpty' => true,
+			),
+		),
+	);
+	public $uses = array('Cforms.Submission', 'Cforms.Cform');
 
 	function admin_export($formId = null){
 		if (!$formId) {
@@ -17,14 +29,22 @@ class SubmissionsController extends CformsAppController {
 		$fields = array_keys($submissions[0]);
 
 		$this->set(compact('submissions', 'fields'));
-		$this->layout = 'csv/default';
-		$this->render('csv/admin_export');
+		$this->layout = 'Cforms.csv/default';
+		$this->render('Cforms.Submissions/csv/admin_export');
 
 	}
 
 	function admin_index() {
-		$this->Submission->recursive = 2;
-		$this->set('submissions', $this->paginate());
+		$this->set('title_for_layout', __d('cforms', 'Submissions'));
+		$this->Prg->commonProcess();
+
+		$this->Submission->recursive = 0;
+		$this->paginate['Submission']['order'] = 'Submission.id DESC';
+
+		$criteria = $this->Submission->parseCriteria($this->Prg->parsedParams());
+
+		$this->set('cforms', $this->Cform->find('list'));
+		$this->set('submissions', $this->paginate($criteria));
 	}
 
 	function admin_view($id = null) {

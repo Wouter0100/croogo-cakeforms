@@ -1,89 +1,67 @@
-<div class="submissions index">
-<h2><?php __('Submissions');?></h2>
-<div class="actions">
-    <?php echo $this->Html->link(__('%s Back to Index', '<i class="icon icon-arrow-left"></i>'), array('controller' => 'cforms', 'action' => 'index'),array('class' => 'btn btn-small','escape' => false)); ?> <?php if(!empty($this->params['pass'])){echo $this->Html->link(__('Export Records', true), array('controller' => 'submissions', 'action' => 'export', $this->params['pass'][0]),array('class' => 'btn btn-small btn-info'));} ?>
-</div>
-<p>
-<table class="table table-striped">
-<tr>
-	<th><?php echo $this->Paginator->sort('id');?></th>
-	<th><?php echo $this->Paginator->sort('cform_id');?></th>
-	<th><?php echo $this->Paginator->sort('created');?></th>
-	<th><?php echo $this->Paginator->sort('ip');?></th>
-	<th class="actions"><?php __('Actions');?></th>
-	<th></th>
-</tr>
 <?php
-$i = 0;
-foreach ($submissions as $submission):
-	$class = null;
-	if ($i++ % 2 == 0) {
-		$class = ' class="altrow"';
-	}
+$this->extend('/Common/admin_index');
+
+$this->Html
+	->addCrumb('', '/admin', array('icon' => $this->Theme->getIcon('home')))
+	->addCrumb(__d('cforms', 'Submissions'), '/' . $this->request->url);
+
+$this->append('search', $this->element('admin/submissions_search'));
+
+
+$this->start('table-heading');
+	$tableHeaders = $this->Html->tableHeaders(array(
+		$this->Paginator->sort('id', __d('croogo', 'Id')),
+		$this->Paginator->sort('cform', __d('croogo', 'Form')),
+		$this->Paginator->sort('created', __d('croogo', 'Created')),
+		$this->Paginator->sort('ip', __d('croogo', 'IP')),
+		''
+	));
+	echo $this->Html->tag('thead', $tableHeaders);
+$this->end();
+
+$this->append('table-body');
 ?>
-	<tr<?php echo $class;?>>
-		<td>
-			<?php echo $submission['Submission']['id']; ?>
-		</td>
-		<td>
-			<?php echo $this->Html->link($submission['Cform']['name'], array('controller' => 'cforms', 'action' => 'view', $submission['Cform']['id'])); ?>
-		</td>
-		<td>
-			<?php echo $submission['Submission']['created']; ?>
-		</td>
-		<td>
-			<?php echo $submission['Submission']['ip']; ?>
-		</td>
-		<td class="actions">
-			<?php echo $this->Html->link('<icon class="icon icon-eye-open"></i>', array('action' => 'view', $submission['Submission']['id']),array('class' => 'btn btn-small','escape' => false)); ?>
-			<?php echo $this->Html->link('<icon class="icon icon-pencil"></i>', array('action' => 'edit', $submission['Submission']['id']),array('class' => 'btn btn-small','escape' => false)); ?>
-			<?php //echo $this->Html->link(__('Export Record', true), array('controller' => 'submissions', 'action' => 'export', $submission['Submission']['id']),array('class' => 'btn btn-small btn-info')); ?>
-		</td>
-		<td>	
-			<?php 
-			echo $this->Form->postButton('<icon class="icon icon-trash"></i>', 
-                    array(
-                    	'action' => 'delete', 
-                    	$submission['Submission']['id']
-                    	),
-                    array(
-                    	'class'=>'btn btn-small btn-danger', 
-                    	'escape' => false,
-                    	'confirm' => 'Are you sure you want to delete this Submission data?'
-                    	)
-                    );
-			
-			
-			
-			//echo $this->Html->link(__('Delete', true), array('action' => 'delete', $submission['Submission']['id']),array('class' => 'btn btn-small btn-danger'), __('Are you sure you want to delete # %s?', $submission['Submission']['id'])); ?>
-		</td>
-	</tr>
-<?php endforeach; ?>
-</table>
-</div>
-<div class="row-fluid">
-	<div class="span12">
-		<?php if ($pagingBlock = $this->fetch('paging')): ?>
-			<?php echo $pagingBlock; ?>
-		<?php else: ?>
-			<?php if (isset($this->Paginator) && isset($this->request['paging'])): ?>
-				<div class="pagination">
-					<p>
+	<tbody>
+	<?php foreach ($submissions as $submission): ?>
+		<tr>
+			<td><?php echo $submission['Submission']['id']; ?></td>
+			<td>
+				<span>
 					<?php
-					echo $this->Paginator->counter(array(
-						'format' => __d('croogo', 'Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
+					echo $this->Html->link($submission['Cform']['name'], array(
+						'controller' => 'Cforms',
+						'action' => 'edit',
+						$submission['Cform']['id']
 					));
 					?>
-					</p>
-					<ul>
-						<?php echo $this->Paginator->first('< ' . __d('croogo', 'first')); ?>
-						<?php echo $this->Paginator->prev('< ' . __d('croogo', 'prev')); ?>
-						<?php echo $this->Paginator->numbers(); ?>
-						<?php echo $this->Paginator->next(__d('croogo', 'next') . ' >'); ?>
-						<?php echo $this->Paginator->last(__d('croogo', 'last') . ' >'); ?>
-					</ul>
+				</span>
+			</td>
+			<td>
+				<?php echo $submission['Submission']['created']; ?>
+			</td>
+			<td>
+				<?php echo $submission['Submission']['ip']; ?>
+			</td>
+			<td>
+				<div class="item-actions">
+					<?php
+					echo $this->Croogo->adminRowActions($submission['Submission']['id']);
+
+					echo ' ' . $this->Croogo->adminRowAction('',
+							array('action' => 'view', $submission['Submission']['id']),
+							array('icon' => $this->Theme->getIcon('envelope'), 'tooltip' => __d('croogo', 'View this item'))
+						);
+
+					echo ' ' . $this->Croogo->adminRowAction('',
+							array('action' => 'delete', $submission['Submission']['id']),
+							array('icon' => $this->Theme->getIcon('delete'), 'tooltip' => __d('croogo', 'Delete this item'))
+						);
+
+					?>
 				</div>
-			<?php endif; ?>
-		<?php endif; ?>
-	</div>
-</div>
+			</td>
+		</tr>
+	<?php endforeach ?>
+	</tbody>
+<?php
+$this->end();

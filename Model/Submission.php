@@ -17,18 +17,27 @@ class Submission extends CformsAppModel {
 		)
 	);
 
+	public $actsAs = array(
+		'Search.Searchable',
+	);
+
+	public $filterArgs = array(
+		'cform_id' => array('type' => 'value'),
+	);
+
+
 	function submit($data){
 		$this->create($data);
 		$this->save();
 		$id = $this->id;
-		
+
 		$formFields = array('Submission' => array('id' => $id,'email' => $data['Form']['email']));
 		//pr ($data);die;
 		foreach($data['Form'] as $formField => $response){
 			if(is_array($response)){
 				$response = implode("\n", $response);
 			}
-			
+
 			$formFields['SubmissionField'][] = array(
 				'form_field' => $formField,
 				'response' => $response
@@ -40,7 +49,7 @@ class Submission extends CformsAppModel {
 			return false;
 		}
 	}
-	
+
 	function getSubmissions($formId){
 		$fields = $this->fields($formId);
 		$skel = Set::combine($fields, '{n}');
@@ -48,20 +57,20 @@ class Submission extends CformsAppModel {
 		foreach($submissions as &$submission){
 			$submission['SubmissionField'] = Set::combine($submission['SubmissionField'], '{n}.form_field', '{n}.response');
 			$submission = Set::merge($skel, $submission['Submission'], $submission['SubmissionField']);
-		}		
+		}
 
 		return $submissions;
 	}
 
 	function getSubmission($formId){
 		$submission = $this->findByCformId($formId);
-		
+
 		$submission['SubmissionField'] = Set::combine($submission['SubmissionField'], '{n}.form_field', '{n}.response');
 		$submission = Set::merge($submission['Submission'], $submission['SubmissionField']);
-		
+
 		return $submission;
 	}
-	
+
 	function fields($formId){
 		$submissions = $this->find('list', array(
 							 'conditions' => array('cform_id' => $formId),
@@ -76,7 +85,7 @@ class Submission extends CformsAppModel {
 		$submissionFields = $this->find('first', array('conditions' => array('cform_id' => $formId)));
 		$fields = Set::extract('{n}.SubmissionField.form_field', $data);
 		$fields2 = array_keys($submissionFields['Submission']);
-		
+
 		$fields = Set::merge($fields2, $fields);
 
 		return $fields;
