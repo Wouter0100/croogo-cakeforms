@@ -37,18 +37,18 @@ echo $this->Html->script(array('/cforms/js/cforms/admin_edit.js'));
 		<h3><a href="#">Miscellaneous Options</a></h3>
 		<div>
 		<?php
-			echo $this->Form->input('action', array('label' => 'Alternative Form Action'));
-			echo $this->Form->input('redirect', array('label' => 'Alternative Success Page/Redirect'));
+			echo $this->Form->input('action', array('label' => __d('cforms', 'Alternative Form Action')));
+			echo $this->Form->input('redirect', array('label' => __d('cforms', 'Alternative Success Page/Redirect')));
 			echo $this->Form->input('hide_after_submission');
-			echo $this->Form->input('success_message', array('label' => 'Show this message once the form has been submitted. HTML is allowed.'));
+			echo $this->Form->input('success_message', array('label' => __d('cforms', 'Show this message once the form has been submitted. HTML is allowed.')));
 		?>
 		</div>
 		<h3><a href="#">Email Options/Autoconfirmation</a></h3>
 		<div>
 		<?php
-			echo $this->Form->input('recipient', array('label' => 'Admin email address'));
-			echo $this->Form->input('from', array('label' => 'FROM: email address'));
-			echo $this->Form->input('auto_confirmation', array('label' => 'Send a copy of this email to the visitor:'));
+			echo $this->Form->input('recipient', array('label' => __d('cforms', 'Admin email address')));
+			echo $this->Form->input('from', array('label' => __d('cforms', 'FROM: email address')));
+			echo $this->Form->input('auto_confirmation', array('label' => __d('cforms', 'Send the following e-mail to the visitor (leave empty for no e-mail)')));
 		?>
 		</div>
 	</div>
