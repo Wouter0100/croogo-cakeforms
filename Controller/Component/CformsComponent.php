@@ -323,8 +323,8 @@ class CformsComponent extends Component {
  */
 	function send($response){
 
-        $email = new CakeEmail('default');
-        $email->emailFormat('both')
+        $emailSubmission = new CakeEmail('default');
+        $emailSubmission->emailFormat('both')
             ->from($response['Cform']['from'])
             ->to($response['Cform']['recipient'])
             ->subject(__d('cforms', '[%s] New %s Submission', Configure::read('Site.title'), $response['Cform']['name']))
@@ -333,10 +333,34 @@ class CformsComponent extends Component {
                 'response' => $response,
             ));
 
+        $confirmationEmail = false;
+
+        foreach ($response['SubmissionField'] as $field => $data) {
+            if ($data['form_field'] == 'email') {
+                $confirmationEmail = $data['response'];
+            }
+        }
+
+        if (!empty($response['Cform']['auto_confirmation']) && $confirmationEmail != false) {
+            $emailConfirmation = new CakeEmail('default');
+            $emailConfirmation->emailFormat('html')
+                ->from($response['Cform']['from'])
+                ->to($confirmationEmail)
+                ->subject(__d('cforms', '[%s] Receive acknowledge %s', Configure::read('Site.title'), $response['Cform']['name']))
+                ->template('Cforms.confirmation')
+                ->viewVars(array(
+                    'response' => $response,
+                ));
+        }
+
         $success = true;
 
         try {
-            $email->send();
+            $emailSubmission->send();
+
+            if (isset($emailConfirmation)) {
+                $emailConfirmation->send();
+            }
         } catch (SocketException $e) {
             $this->controller->Session->setFlash(__d('cforms', 'Error sending contact notification: %s', $e->getMessage()));
             $this->log(sprintf('Error sending contact notification: %s', $e->getMessage()));
